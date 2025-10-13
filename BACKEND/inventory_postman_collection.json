@@ -1,0 +1,343 @@
+{
+  "info": {
+    "name": "Inventory Management System - API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Imported collection for testing the Inventory Management System API (Express + Sequelize). Base URL uses {{baseUrl}} variable."
+  },
+  "item": [
+    {
+      "name": "Suppliers",
+      "item": [
+        {
+          "name": "Create Supplier",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Acme Supplies\",\n  \"contactInfo\": {\n    \"email\": \"acme@example.com\",\n    \"phone\": \"07000000000\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/suppliers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Suppliers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/suppliers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Supplier by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/suppliers/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "suppliers",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Warehouses",
+      "item": [
+        {
+          "name": "Create Warehouse",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Main Depot\",\n  \"location\": \"Ikeja\",\n  \"capacity\": 500\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/warehouses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Warehouses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/warehouses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Warehouse by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/warehouses/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "warehouses",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"SKU-001\",\n  \"name\": \"Widget A\",\n  \"description\": \"A test widget\",\n  \"reorderThreshold\": 10,\n  \"defaultSupplierId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Adjust Stock (simulate sale or arrival)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"warehouseId\": 1,\n  \"delta\": -15\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/1/adjust-stock",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "adjust-stock"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Purchase Orders",
+      "item": [
+        {
+          "name": "List Purchase Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/purchase-orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "purchase-orders"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Purchase Order (manual)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"supplierId\": 1,\n  \"warehouseId\": 1,\n  \"quantityOrdered\": 20\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/purchase-orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "purchase-orders"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark Purchase Order Arrived",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/purchase-orders/6/arrive",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "purchase-orders",
+                "6",
+                "arrive"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Purchase Order by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/purchase-orders/6",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "purchase-orders",
+                "6"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Jobs",
+      "item": [
+        {
+          "name": "Run Reorder Scan (manual trigger)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"leadTimeDays\": 5,\n  \"productId\": 1,\n  \"warehouseId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reorder/run",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reorder",
+                "run"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api/v1"
+    }
+  ]
+}

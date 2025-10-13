@@ -1,0 +1,5 @@
+export function addDays(date, days) {
+const d = new Date(date);
+d.setDate(d.getDate() + Number(days));
+return d;
+}
