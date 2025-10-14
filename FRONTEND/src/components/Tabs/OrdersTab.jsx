@@ -3,8 +3,9 @@ import { Truck, AlertCircle, TrendingDown, RefreshCw, MoreVertical } from 'lucid
 import { api } from '../../services/api';
 import { LoadingSpinner } from '../Common/LoadingSpinner';
 import { EmptyState } from '../Common/EmptyState';
+import { Plus } from 'lucide-react';
 
-export function OrdersTab({ darkMode }) {
+export function OrdersTab({ darkMode , onCreateClick}) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
@@ -62,10 +63,20 @@ export function OrdersTab({ darkMode }) {
     <div className="space-y-6 pb-8">
       <div className="section-header">
         <h2 className="section-title">Purchase Orders</h2>
-        <button onClick={fetchOrders} className="refresh-button">
-          <RefreshCw size={16} />
-          Refresh
-        </button>
+  {<div style={{ display: 'flex', gap: '0.5rem' }}>
+  <button onClick={fetchOrders} className="refresh-button">
+    <RefreshCw size={16} />
+    Refresh
+  </button>
+  <button
+    onClick={onCreateClick}
+    className="refresh-button"
+    style={{ background: 'linear-gradient(to right, #06b6d4, #3b82f6)' }}
+  >
+    <Plus size={16} />
+    Create Order
+  </button>
+</div> }
       </div>
 
       {loading ? (
