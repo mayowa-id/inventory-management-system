@@ -2,13 +2,17 @@
   "name":"inventory-management-system",
   "version":"1.0.0","main":"src/server.js",
   "type":"module",
-  "scripts":
-      {"dev":"nodemon src/server.js",
-        "start":"node src/server.js",
-        "seed":"node scripts/seed-db.js",
-        "reset-db":"node scripts/reset-db.js",
-        "migrate":"npx sequelize-cli db:migrate",
-        "test":"jest --runInBand"},
+  "scripts": {
+  "dev": "nodemon src/server.js",
+  "start": "node src/server.js",
+  "seed": "node scripts/seed-db.js",
+  "reset-db": "node scripts/reset-db.js",
+  "migrate": "npx sequelize-cli db:migrate",
+  "test": "jest --runInBand",
+  "build": "npm install pg"
+}
+  
+  ,
   "devDependencies":{
     "nodemon":"^3.1.10"
   },
