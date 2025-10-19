@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm ci",
+  "buildCommand": "npm install",
     "env": {
     "NODE_VERSION": "22.13.1"
   },
