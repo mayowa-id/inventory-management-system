@@ -1,5 +1,8 @@
 {
-     "buildCommand": "npm ci && npm run build || true",
-     "outputDirectory": ".",
-     "installCommand": "npm install --no-optional"
-   }
+  "buildCommand": "npm install && npm run build || echo 'No build script'",
+  "outputDirectory": ".",
+  "installCommand": "npm install --legacy-peer-deps",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
