@@ -1,5 +1,6 @@
 {
-  "buildCommand": "echo 'Build skipped - Node.js backend'",
-  "outputDirectory": ".",
-  "installCommand": "npm install"
+  "buildCommand": "npm install",
+  "env": {
+    "NODE_VERSION": "22.13.1"
+  }
 }
