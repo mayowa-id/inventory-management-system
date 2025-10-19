@@ -1,8 +1,5 @@
 {
-  "buildCommand": "npm install && npm run build || echo 'No build script'",
+  "buildCommand": "echo 'Build skipped - Node.js backend'",
   "outputDirectory": ".",
-  "installCommand": "npm install --legacy-peer-deps",
-  "env": {
-    "NODE_ENV": "production"
-  }
+  "installCommand": "npm install"
 }
