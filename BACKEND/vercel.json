@@ -1,6 +1,13 @@
 {
   "buildCommand": "npm install",
-  "env": {
+    "env": {
     "NODE_VERSION": "22.13.1"
+  },
+  "devCommand": "node src/server.js",
+  "functions": {
+    "src/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
   }
 }
