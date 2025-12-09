@@ -1,31 +1,19 @@
-// server.js (local dev)
 import dotenv from 'dotenv';
 dotenv.config();
 
 import app from './app.js';
 import { sequelize } from './models/index.js'; // ensure same path
 
-<<<<<<< HEAD
 const PORT = process.env.PORT || 3000;
 
-=======
->>>>>>> 04940e4a93b189776253f3832cffc08f17b8e36f
 async function start() {
   try {
     // Authenticate database connection
     await sequelize.authenticate();
     console.log('Database connection established.');
 
-<<<<<<< HEAD
     // Only for local dev:
     await sequelize.sync({ alter: true }); // optional: run only locally if desired
-=======
-    // Sync database models
-    await sequelize.sync({ alter: true });
-    console.log('Database synchronized successfully.');
-
-    // Start server
->>>>>>> 04940e4a93b189776253f3832cffc08f17b8e36f
     const server = app.listen(PORT, () => {
       console.log(`Server listening on http://localhost:${PORT}`);
     });
