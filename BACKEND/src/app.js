@@ -34,7 +34,14 @@ app.use(express.json());
 // API routes
 app.use('/api/v1/suppliers', suppliersRouter);
 app.use('/api/v1/warehouses', warehousesRouter);
-app.use('/api/v1/products', productsRouter);
+app.use('/api/v1/products', (req, res, next) => {
+  try {
+    return productsRouter(req, res, next);
+  } catch (err) {
+    console.error('Products router sync error:', err);
+    return next(err);
+  }
+});
 app.use('/api/v1/purchase-orders', purchaseOrdersRouter);
 app.use('/api/v1/reorder', reorderRoutes);
 
@@ -47,6 +54,18 @@ app.get('/api/v1/health', async (req, res) => {
     console.error('DB health check failed:', err.message);
     res.status(500).json({ status: 'error', message: err.message });
   }
+});
+
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err && err.stack ? err.stack : err);
+
+  if (res.headersSent) return next(err);
+
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Internal Server Error',
+    ...(process.env.NODE_ENV !== 'production' ? { stack: err.stack } : {})
+  });
 });
 
 export default app;
