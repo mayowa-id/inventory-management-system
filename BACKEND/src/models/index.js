@@ -1,10 +1,15 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db.js';
+import { sequelize as importedSequelize } from '../config/db.js';
 import SupplierModel from './supplier.js';
 import WarehouseModel from './warehouse.js';
 import ProductModel from './product.js';
 import WarehouseProductModel from './warehouseProduct.js';
 import PurchaseOrderModel from './purchaseOrder.js';
+
+const sequelize = globalThis.__sequelize || importedSequelize;
+if (!globalThis.__sequelize) {
+  globalThis.__sequelize = sequelize;
+}
 
 // initialize models
 const Supplier = SupplierModel(sequelize, DataTypes);
@@ -30,7 +35,7 @@ PurchaseOrder.belongsTo(Product, { foreignKey: 'productId' });
 PurchaseOrder.belongsTo(Supplier, { foreignKey: 'supplierId' });
 PurchaseOrder.belongsTo(Warehouse, { foreignKey: 'warehouseId' });
 
-//  export models and sequelize
+// export models and sequelize
 export {
   sequelize,
   Supplier,
