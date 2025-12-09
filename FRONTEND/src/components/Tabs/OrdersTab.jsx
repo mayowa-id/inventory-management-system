@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Truck, AlertCircle, TrendingDown, RefreshCw } from 'lucide-react';
+import { Truck, AlertCircle, TrendingDown, RefreshCw, MoreVertical } from 'lucide-react';
 import { api } from '../../services/api';
 import { LoadingSpinner } from '../Common/LoadingSpinner';
 import { EmptyState } from '../Common/EmptyState';
+import { Plus } from 'lucide-react';
 
-export function OrdersTab({ darkMode }) {
+export function OrdersTab({ darkMode , onCreateClick}) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [openMenuId, setOpenMenuId] = useState(null);
 
   useEffect(() => {
     fetchOrders();
@@ -21,6 +23,27 @@ export function OrdersTab({ darkMode }) {
       console.error('Error fetching orders:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const markOrderAsArrived = async (orderId) => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/v1/purchase-orders/${orderId}/arrive`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await res.json();
+      
+      if (res.ok) {
+        alert('Order marked as arrived!');
+        setOpenMenuId(null);
+        fetchOrders();
+      } else {
+        alert(data.error || 'Error marking order as arrived');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error marking order as arrived');
     }
   };
 
@@ -40,10 +63,20 @@ export function OrdersTab({ darkMode }) {
     <div className="space-y-6 pb-8">
       <div className="section-header">
         <h2 className="section-title">Purchase Orders</h2>
-        <button onClick={fetchOrders} className="refresh-button">
-          <RefreshCw size={16} />
-          Refresh
-        </button>
+  {<div style={{ display: 'flex', gap: '0.5rem' }}>
+  <button onClick={fetchOrders} className="refresh-button">
+    <RefreshCw size={16} />
+    Refresh
+  </button>
+  <button
+    onClick={onCreateClick}
+    className="refresh-button"
+    style={{ background: 'linear-gradient(to right, #06b6d4, #3b82f6)' }}
+  >
+    <Plus size={16} />
+    Create Order
+  </button>
+</div> }
       </div>
 
       {loading ? (
@@ -70,9 +103,85 @@ export function OrdersTab({ darkMode }) {
                       <p className="order-detail">Warehouse: <strong>#{order.warehouseId}</strong></p>
                     </div>
                   </div>
-                  <span className={`status-badge ${statusClass}`}>
-                    {order.status}
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <span className={`status-badge ${statusClass}`}>
+                      {order.status}
+                    </span>
+                    
+                    {/* Three-dot menu */}
+                    <div style={{ position: 'relative' }}>
+                      <button
+                        onClick={() => setOpenMenuId(openMenuId === order.id ? null : order.id)}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          padding: '0.5rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <MoreVertical size={20} color={darkMode ? '#cbd5e1' : '#64748b'} />
+                      </button>
+
+                      {/* Dropdown menu */}
+                      {openMenuId === order.id && (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            right: 0,
+                            top: '100%',
+                            backgroundColor: darkMode ? '#1e293b' : '#ffffff',
+                            border: `1px solid ${darkMode ? '#334155' : '#e2e8f0'}`,
+                            borderRadius: '0.5rem',
+                            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                            zIndex: 10,
+                            minWidth: '200px'
+                          }}
+                        >
+                          {order.status !== 'COMPLETED' && (
+                            <button
+                              onClick={() => markOrderAsArrived(order.id)}
+                              style={{
+                                display: 'block',
+                                width: '100%',
+                                padding: '0.75rem 1rem',
+                                textAlign: 'left',
+                                border: 'none',
+                                backgroundColor: 'transparent',
+                                cursor: 'pointer',
+                                color: darkMode ? '#22c55e' : '#16a34a',
+                                fontSize: '0.875rem',
+                                fontWeight: '500',
+                                transition: 'background-color 0.2s'
+                              }}
+                              onMouseEnter={(e) => {
+                                e.target.style.backgroundColor = darkMode ? 'rgba(34, 197, 94, 0.1)' : 'rgba(22, 163, 74, 0.1)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.target.style.backgroundColor = 'transparent';
+                              }}
+                            >
+                              ✓ Mark as Arrived
+                            </button>
+                          )}
+                          {order.status === 'COMPLETED' && (
+                            <div
+                              style={{
+                                padding: '0.75rem 1rem',
+                                color: darkMode ? '#94a3b8' : '#94a3b8',
+                                fontSize: '0.875rem',
+                                fontStyle: 'italic'
+                              }}
+                            >
+                              Order already completed
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             );

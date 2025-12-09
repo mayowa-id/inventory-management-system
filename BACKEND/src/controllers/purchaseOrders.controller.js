@@ -1,12 +1,22 @@
-import { PurchaseOrder, WarehouseProduct, sequelize } from '../models/index.js';
+import { PurchaseOrder, WarehouseProduct, Product, Supplier, Warehouse, sequelize } from '../models/index.js';
 
 export async function createPurchaseOrder(req, res) {
   try {
     const { productId, warehouseId, supplierId, quantityOrdered, orderDate } = req.body;
 
-    if (!productId || !warehouseId || !supplierId || !quantityOrdered) {
+    if (!productId || !warehouseId || !supplierId || !quantityOrdered){
       return res.status(400).json({ error: 'Missing required fields' });
     }
+
+    const [product, supplier, warehouse] = await Promise.all([
+      Product.findByPk(productId),
+      Supplier.findByPk(supplierId),
+      Warehouse.findByPk(warehouseId),
+    ]);
+
+    if (!product) return res.status(400).json({ error: `Product with ID ${productId} not found` });
+    if (!supplier) return res.status(400).json({ error: `Supplier with ID ${supplierId} not found` });
+    if (!warehouse) return res.status(400).json({ error: `Warehouse with ID ${warehouseId} not found` });
 
     const newOrder = await PurchaseOrder.create({
       productId,
@@ -14,7 +24,7 @@ export async function createPurchaseOrder(req, res) {
       supplierId,
       quantityOrdered,
       orderDate: orderDate || new Date(),
-      status: 'PENDING'
+      status: 'PENDING',
     });
 
     return res.status(201).json(newOrder);
@@ -27,7 +37,7 @@ export async function createPurchaseOrder(req, res) {
 export async function listOrders(req, res) {
   try {
     const orders = await PurchaseOrder.findAll({
-      order: [['orderDate', 'DESC']]
+      order: [['orderDate', 'DESC']],
     });
     return res.json(orders);
   } catch (error) {
@@ -72,18 +82,21 @@ export async function markOrderAsArrived(req, res) {
       if (qty > 0) {
         const wp = await WarehouseProduct.findOne({
           where: { productId: po.productId, warehouseId: po.warehouseId },
-          transaction: tx
+          transaction: tx,
         });
 
         if (wp) {
           wp.quantity += qty;
           await wp.save({ transaction: tx });
         } else {
-          await WarehouseProduct.create({
-            productId: po.productId,
-            warehouseId: po.warehouseId,
-            quantity: qty
-          }, { transaction: tx });
+          await WarehouseProduct.create(
+            {
+              productId: po.productId,
+              warehouseId: po.warehouseId,
+              quantity: qty,
+            },
+            { transaction: tx }
+          );
         }
       }
 
@@ -93,7 +106,8 @@ export async function markOrderAsArrived(req, res) {
     });
 
     if (result === null) return res.status(404).json({ error: 'Purchase order not found' });
-    if (result.alreadyCompleted) return res.status(400).json({ error: 'Purchase order already completed', order: result.po });
+    if (result.alreadyCompleted)
+      return res.status(400).json({ error: 'Purchase order already completed', order: result.po });
 
     return res.json(result.po);
   } catch (error) {

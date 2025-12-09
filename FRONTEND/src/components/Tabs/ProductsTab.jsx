@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Package, RefreshCw } from 'lucide-react';
+import { Package, RefreshCw, Plus } from 'lucide-react';
 import { api } from '../../services/api';
 import { LoadingSpinner } from '../Common/LoadingSpinner';
 import { EmptyState } from '../Common/EmptyState';
 
-export function ProductsTab({ darkMode }) {
+export function ProductsTab({ darkMode, onCreateClick }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -49,16 +49,26 @@ export function ProductsTab({ darkMode }) {
     <div className="space-y-6 pb-8">
       <div className="section-header">
         <h2 className="section-title">Product Inventory</h2>
-        <button onClick={fetchProducts} className="refresh-button">
-          <RefreshCw size={16} />
-          Refresh
-        </button>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button onClick={fetchProducts} className="refresh-button">
+            <RefreshCw size={16} />
+            Refresh
+          </button>
+          <button
+            onClick={onCreateClick}
+            className="refresh-button"
+            style={{ background: 'linear-gradient(to right, #06b6d4, #3b82f6)' }}
+          >
+            <Plus size={16} />
+            Add Product
+          </button>
+        </div>
       </div>
 
       {loading ? (
         <LoadingSpinner darkMode={darkMode} />
       ) : products.length === 0 ? (
-        <EmptyState message="No products found. Make sure your backend is running." darkMode={darkMode} />
+        <EmptyState message="No products found. Click 'Add Product' to create one." darkMode={darkMode} />
       ) : (
         <div>
           {products.map((product) => (
@@ -69,7 +79,7 @@ export function ProductsTab({ darkMode }) {
                     <Package className="product-icon" size={20} />
                     <h3 className="product-name">{product.name}</h3>
                   </div>
-                  <p className="product-sku">SKU: {product.sku}</p>
+                  <p className="product-sku">Product ID: {product.sku}</p>
                   <p className="product-description">{product.description}</p>
                 </div>
                 <div className="product-stock">
