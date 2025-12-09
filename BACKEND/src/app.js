@@ -9,12 +9,22 @@ import { sequelize } from './models/index.js';
 
 const app = express();
 
-// Allow origin from env, fallback to localhost for local dev
-const allowedOrigin = process.env.FRONTEND_URL || 'http://localhost:5173';
+const rawOrigins = process.env.FRONTEND_URLS || process.env.FRONTEND_URL || '';
+const allowedOrigins = rawOrigins
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
 
 app.use(
   cors({
-    origin: allowedOrigin,
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true); 
+      if (allowedOrigins.length === 0) {
+        return callback(new Error('CORS: No allowed origins configured'), false);
+      }
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error('CORS: Origin not allowed'), false);
+    },
     credentials: true,
   })
 );

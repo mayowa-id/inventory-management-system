@@ -36,6 +36,16 @@ PurchaseOrder.belongsTo(Supplier, { foreignKey: 'supplierId' });
 PurchaseOrder.belongsTo(Warehouse, { foreignKey: 'warehouseId' });
 
 // export models and sequelize
+
+export default{
+  sequelize,
+  Supplier,
+  Warehouse,
+  Product,
+  WarehouseProduct,
+  PurchaseOrder
+};
+
 export {
   sequelize,
   Supplier,
