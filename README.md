@@ -1,8 +1,6 @@
 # inventory-management-system
 A full-stack inventory management application with a Node.js + Express backend and a React frontend. It enables real-time tracking of products, warehouses, and purchase orders with stock adjustment and reorder automation.
 
-# Setup instructions 
-
 # Backend Setup 
 1. CD into the backend folder 
 2. Install the dependencies - npm install - in terminal
