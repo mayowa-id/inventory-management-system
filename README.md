@@ -19,4 +19,4 @@ A full-stack inventory management application with a Node.js + Express backend a
 - FRONTEND - React, Lucide Iconse
 - API Base: http://localhost:3000/api/v1
 
-You can check the backend folder for a json of all the endpoints, pull it in postman and ping all the endpoints at a go. 
+You can check the backend folder for a json of all the endpoints, pull it in postman and ping all the endpoints at a go
