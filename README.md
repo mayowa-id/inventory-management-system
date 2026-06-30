@@ -9,7 +9,7 @@ A full-stack inventory management application with a Node.js and Express backend
 5. Start the backend server  - npm run dev - in terminal
 
 # Frontend Setup 
-1. In a separate terminal now, cd into the frontend folder
+1. In a separate terminal , cd into the frontend folder
 2. Install dependencies - npm install - in terminal
 3. Start the frontend - npm run dev - in terminal
 4. Open your browser and visit the link you see in terminal
