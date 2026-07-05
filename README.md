@@ -6,7 +6,7 @@ A full-stack inventory management application with a Node.js and Express backend
 2. Install the dependencies - npm install - in terminal.
 3. Create an env file and configure your db connection.
 4. Run db synchronization if necesary.
-5. Start the backend server  - npm run dev - in terminal
+5. Start the backend server  - npm run dev - in terminal.
 
 # Frontend Setup 
 1. In a separate terminal, cd into the frontend folder
